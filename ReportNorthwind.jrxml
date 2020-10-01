@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportNorthwind" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="869120fd-abc2-42a2-9a7b-b778bbc237f6">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Con_db_Northwind"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="228"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="765"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="721"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="265"/>
+	<subDataset name="Evolution_montant_ventes_par_mois" uuid="c70dc6c7-6af0-4f34-9ce6-35cf54a140bf">
+		<property name="com.jaspersoft.studio.data.sql.tables">
+			<![CDATA[bm9ydGh3aW5kLmBvcmRlciBkZXRhaWxzYCBBUyAsNjE2LDE5MixjMzIyYWVkZS1kNWRlLTRiZmUt
+YjA5NS1lODMxMGQwOWE5ODk7bm9ydGh3aW5kLm9yZGVycyBBUyAsMTA1LDc0LDU4ODQ5Mzg2LTk2
+ZGEtNDM2ZS1iNzNkLTBjNGNjOWE0MGZiZTs=
+]]>
+		</property>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="201"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="792"/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Con_db_Northwind"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT MONTH(northwind.orders.`OrderDate`) AS Mois,
+   SUM(northwind.`order details`.`UnitPrice` *northwind.`order details`.`Quantity`)	AS Montant
+FROM northwind.`order details`
+	INNER JOIN northwind.orders ON 
+	 northwind.`order details`.`OrderID` = northwind.orders.`OrderID`
+	 WHERE YEAR(northwind.orders.`OrderDate`) =1997
+	 GROUP BY Mois
+	 ORDER BY Mois ASC]]>
+		</queryString>
+		<field name="Mois" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="Mois"/>
+		</field>
+		<field name="Montant" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="Montant"/>
+		</field>
+	</subDataset>
+	<subDataset name="Repartition_montants_ventes_par_categories" uuid="5673de13-f26f-4d65-9bc5-c8048dc78e09">
+		<property name="com.jaspersoft.studio.data.sql.tables">
+			<![CDATA[bm9ydGh3aW5kLm9yZGVycyBBUyAsMzEsMTcsYWFiNWE2M2MtMTBjNy00NDJlLTg2MjMtM2QyYWI4
+MWQzOTg3O25vcnRod2luZC5wcm9kdWN0cyBBUyAsNDkwLDkxLGEzMjU5MDEyLWRlOTEtNDkwNC04
+ZTBlLTBhOTgyM2NhNjRkNztub3J0aHdpbmQuYG9yZGVyIGRldGFpbHNgIEFTICwyNjIsMTE5LDRm
+MzUwNDA4LTUyOTYtNGEzZC04NzgyLWNiOGI4OWEzYTg5Mztub3J0aHdpbmQuY2F0ZWdvcmllcyBB
+UyAsNzI1LDk0LGI2ZTcxZWU0LTc4YTAtNDQzOS04ODBhLTdmZDFkMzMyYzEyNzs=
+]]>
+		</property>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="176"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="817"/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Con_db_Northwind"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT  	northwind.categories.`CategoryName` AS Categorie, 
+   SUM(northwind.`order details`.`UnitPrice` *northwind.`order details`.`Quantity`)AS Montant
+FROM northwind.`order details`
+	INNER JOIN northwind.orders ON 
+	 northwind.`order details`.`OrderID` = northwind.orders.`OrderID` 
+	INNER JOIN northwind.products ON 
+	 northwind.`order details`.`ProductID` = northwind.products.`ProductID` 
+	INNER JOIN northwind.categories ON 
+	 northwind.products.`CategoryID` = northwind.categories.`CategoryID`
+	 WHERE YEAR(northwind.orders.`OrderDate`) =1997
+	 GROUP BY Categorie
+	 ORDER BY Categorie ASC]]>
+		</queryString>
+		<field name="Categorie" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="Categorie"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="categories"/>
+		</field>
+		<field name="Montant" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="Montant"/>
+		</field>
+	</subDataset>
+	<subDataset name="Top_10_quantite_produits_vendus" uuid="ef3b003e-4a0c-416f-8579-6a4a9cf408e6">
+		<property name="com.jaspersoft.studio.data.sql.tables">
+			<![CDATA[bm9ydGh3aW5kLm9yZGVycyBBUyAsNjYsNjgsNWRiNDhiMDctZWZjOS00MDNhLWI5YTItODI1Njc0
+MWFiNzdiO25vcnRod2luZC5wcm9kdWN0cyBBUyAsNjE2LDEzNiw0MWQ2NmEzZC0wOWFhLTQ5OWIt
+YTY4Yi0xMTJmMWIxNWU0YjI7bm9ydGh3aW5kLmBvcmRlciBkZXRhaWxzYCBBUyAsMzk5LDIwMyw4
+ZDc1NTcwMy0yN2M0LTQ2NjctOTA2Yy04NmI0N2M5YjE2YTE7
+]]>
+		</property>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="227"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="766"/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Con_db_Northwind"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT northwind.products.`ProductName` AS Produit,
+	SUM(northwind.`order details`.`Quantity`) AS Quantite
+FROM northwind.`order details`
+	INNER JOIN northwind.orders ON 
+	 northwind.`order details`.`OrderID` = northwind.orders.`OrderID` 
+	INNER JOIN northwind.products ON 
+	 northwind.`order details`.`ProductID` = northwind.products.`ProductID`
+	 WHERE YEAR(northwind.orders.`OrderDate`)  =1997
+	 GROUP BY Produit
+	 ORDER BY Quantite DESC
+	 LIMIT 10 ]]>
+		</queryString>
+		<field name="Produit" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="Produit"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="products"/>
+		</field>
+		<field name="Quantite" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="Quantite"/>
+		</field>
+	</subDataset>
+	<subDataset name="Top_5_fournisseur_quantite_produit" uuid="b5eb5b7a-0e35-4c0f-9d43-6743fb61504a">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Con_db_Northwind"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT northwind.suppliers.`CompanyName` AS Fournisseur, 
+SUM(northwind.`order details`.`Quantity`) AS Quantite 
+FROM northwind.`order details` 
+INNER JOIN northwind.orders ON northwind.`order details`.`OrderID` = northwind.orders.`OrderID`
+INNER JOIN northwind.products ON northwind.`order details`.`ProductID` = northwind.products.`ProductID` 
+INNER JOIN northwind.suppliers ON northwind.products.`SupplierID` = northwind.suppliers.`SupplierID` 
+WHERE YEAR(northwind.orders.`OrderDate`)=1997 
+GROUP BY Fournisseur 
+ORDER BY Quantite DESC 
+LIMIT 5]]>
+		</queryString>
+		<field name="Fournisseur" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="Fournisseur"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="suppliers"/>
+		</field>
+		<field name="Quantite" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="Quantite"/>
+		</field>
+	</subDataset>
+	<subDataset name="Repartition_ventes_par_pays" uuid="39d2c19f-9bba-4901-b255-cb2b66f2840c">
+		<property name="com.jaspersoft.studio.data.sql.tables">
+			<![CDATA[bm9ydGh3aW5kLmBvcmRlciBkZXRhaWxzYCBBUyAsNDMxLDE0NiwyMDNhMDdjOC0xYWM1LTRmYzEt
+Yjk1Zi04OWIzYWExNzlkNjE7bm9ydGh3aW5kLm9yZGVycyBBUyAsMjQ0LDc5LGNmYWIyNGRlLWI0
+MTMtNGY1My1iNzIzLTM0ZGI0ZGVhZTAxYztub3J0aHdpbmQuY3VzdG9tZXJzIEFTICw4Myw3NCw0
+MWRkNzhjNC1hMGVmLTQxMzYtYTBhYi03YzEyZmZmOGVlNGY7
+]]>
+		</property>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="263"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="730"/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Con_db_Northwind"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT northwind.customers.`Country`  AS Pays,
+	SUM(northwind.`order details`.`UnitPrice`*northwind.`order details`.`Quantity`)AS Montant
+FROM northwind.`order details`
+	INNER JOIN northwind.orders ON 
+	 northwind.`order details`.`OrderID` = northwind.orders.`OrderID` 
+	INNER JOIN northwind.customers ON 
+	 northwind.orders.`CustomerID` = northwind.customers.`CustomerID`
+WHERE YEAR(northwind.orders.`OrderDate`)=1997
+GROUP BY Pays
+ORDER BY Pays]]>
+		</queryString>
+		<field name="Pays" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="Pays"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="customers"/>
+		</field>
+		<field name="Montant" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="Montant"/>
+		</field>
+	</subDataset>
+	<subDataset name="Top_10_quantite_vendus_par_ville" uuid="67370b56-6d03-4b2e-9462-54dc460b83de">
+		<property name="com.jaspersoft.studio.data.sql.tables">
+			<![CDATA[bm9ydGh3aW5kLmN1c3RvbWVycyBBUyAsMTA5LDg0LGEwMjg4MjdkLWIwOTItNGZlZS1hYmUwLTZl
+MWE1ZTAyNGRlZTtub3J0aHdpbmQuYG9yZGVyIGRldGFpbHNgIEFTICw1NjAsMTY1LDIyNzQ1NWU2
+LTI4MGEtNGQwMy04MmJhLTJhZDc3MDlmODk1YTtub3J0aHdpbmQub3JkZXJzIEFTICwzMTEsMTE5
+LDFjZTQ5Y2Q0LWY0YzAtNDk3Yi04MWU1LTg1ZGVhMWY4ZTJlNTs=
+]]>
+		</property>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="186"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="814"/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Con_db_Northwind"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT northwind.customers.`City` AS Ville,
+	SUM(northwind.`order details`.`Quantity`) AS Quantite
+FROM northwind.`order details`
+	INNER JOIN northwind.orders ON 
+	 northwind.`order details`.`OrderID` = northwind.orders.`OrderID` 
+	INNER JOIN northwind.customers ON 
+	 northwind.orders.`CustomerID` = northwind.customers.`CustomerID`
+	 WHERE YEAR(northwind.orders.`OrderDate`)=1997
+	 GROUP BY Ville
+	 ORDER BY Quantite DESC
+	 LIMIT 10]]>
+		</queryString>
+		<field name="Ville" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="Ville"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="customers"/>
+		</field>
+		<field name="Quantite" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="Quantite"/>
+		</field>
+	</subDataset>
+	<queryString>
+		<![CDATA[SELECT northwind.customers.`Country`  AS Pays,
+	 northwind.customers.`City` AS Ville,
+	 northwind.suppliers.`CompanyName` AS Fournisseur,
+	 northwind.categories.`CategoryName` AS Categorie, 
+	 northwind.products.`ProductName` AS Produit,
+	 SUM(northwind.`order details`.`Quantity`) AS Quantite,
+	 ROUND( SUM(northwind.`order details`.`Quantity`*northwind.`order details`.`UnitPrice`),1) AS Montant
+FROM northwind.`order details`
+	INNER JOIN northwind.orders ON 
+	 northwind.`order details`.`OrderID` = northwind.orders.`OrderID` 
+	INNER JOIN northwind.customers ON 
+	 northwind.orders.`CustomerID` = northwind.customers.`CustomerID` 
+	INNER JOIN northwind.products ON 
+	 northwind.`order details`.`ProductID` = northwind.products.`ProductID` 
+	INNER JOIN northwind.categories ON 
+	 northwind.products.`CategoryID` = northwind.categories.`CategoryID` 
+	INNER JOIN northwind.suppliers ON 
+	 northwind.products.`SupplierID` = northwind.suppliers.`SupplierID` 
+	 WHERE YEAR(northwind.orders.`OrderDate`) = 1997
+	 GROUP BY  Pays,Ville,Fournisseur,Categorie,Produit
+	 ORDER BY  Pays,Ville,Fournisseur,Categorie,Produit ASC]]>
+	</queryString>
+	<field name="Pays" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Pays"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customers"/>
+	</field>
+	<field name="Ville" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Ville"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customers"/>
+	</field>
+	<field name="Fournisseur" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Fournisseur"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="suppliers"/>
+	</field>
+	<field name="Categorie" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Categorie"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="categories"/>
+	</field>
+	<field name="Produit" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Produit"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="products"/>
+	</field>
+	<field name="Quantite" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="Quantite"/>
+	</field>
+	<field name="Montant" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="Montant"/>
+	</field>
+	<variable name="Total_Montant" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[Math.round($F{Montant}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="Total_Quantite" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{Quantite}]]></variableExpression>
+	</variable>
+	<variable name="Total_Montant_Pays" class="java.lang.Double" resetType="Group" resetGroup="Pays" calculation="Sum">
+		<variableExpression><![CDATA[Math.round($F{Montant}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="Total_Quantite_Pays" class="java.lang.Integer" resetType="Group" resetGroup="Pays" calculation="Sum">
+		<variableExpression><![CDATA[$F{Quantite}]]></variableExpression>
+	</variable>
+	<variable name="Total_Montant_Ville" class="java.lang.Double" resetType="Group" resetGroup="Ville" calculation="Sum">
+		<variableExpression><![CDATA[Math.round($F{Montant}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="Total_Quantite_Ville" class="java.lang.Integer" resetType="Group" resetGroup="Ville" calculation="Sum">
+		<variableExpression><![CDATA[$F{Quantite}]]></variableExpression>
+	</variable>
+	<group name="Pays">
+		<groupExpression><![CDATA[$F{Pays}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement mode="Opaque" x="0" y="0" width="555" height="20" backcolor="#B7CBF7" uuid="cc6d9953-4f84-46d3-b31d-cd24fccaf72c">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="02d05c0c-cc4c-4909-935e-6c58c1c55037"/>
+					</reportElement>
+					<box padding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Pays : "+$F{Pays}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="25">
+				<textField>
+					<reportElement x="397" y="0" width="79" height="20" uuid="a3b6773e-5bde-4319-a187-9291bb0addde"/>
+					<box rightPadding="4">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textFieldExpression><![CDATA[$V{Total_Quantite_Pays}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="476" y="0" width="79" height="20" uuid="a5bd1b72-a3ca-4346-993f-3312600d7e1f"/>
+					<box rightPadding="4">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textFieldExpression><![CDATA[$V{Total_Montant_Pays} + " $"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Opaque" x="0" y="0" width="397" height="20" backcolor="#B7CBF7" uuid="04c6a61d-30e9-44cd-80e3-2da160068160">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="02d05c0c-cc4c-4909-935e-6c58c1c55037"/>
+					</reportElement>
+					<box padding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Total Pays : "+$F{Pays}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Ville">
+		<groupExpression><![CDATA[$F{Ville}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement mode="Opaque" x="0" y="0" width="555" height="20" backcolor="#F2FAFA" uuid="1b5440a3-c6de-40c7-8d5c-f3ebd926777a">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0eb237b9-9292-4d2f-92e1-b6ddfc6f5aa4"/>
+					</reportElement>
+					<box leftPadding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Ville : "+$F{Ville}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="25">
+				<textField>
+					<reportElement x="476" y="0" width="79" height="20" uuid="347860ff-9016-4ec2-bcb0-62bfd04c872f"/>
+					<box rightPadding="4">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{Total_Montant_Ville} + " $"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="397" y="0" width="79" height="20" uuid="e98c3949-58d8-4724-a9f9-90d2346aca2a"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="4">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{Total_Quantite_Ville}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Opaque" x="0" y="0" width="397" height="20" backcolor="#F2FAFA" uuid="c120f341-d281-478d-b88d-235c60f03b70">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0eb237b9-9292-4d2f-92e1-b6ddfc6f5aa4"/>
+					</reportElement>
+					<box leftPadding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Total Ville : "+$F{Ville}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="270" height="39" uuid="5bb93c8c-bc09-43d8-8e1e-de9c28959d24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rapport des Ventes de Northwind:1997 by:Amadou LY]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="114" height="17" uuid="a93f1325-76a8-4db0-bf15-2077368d9931"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Northwind:1997]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="450" y="0" width="100" height="20" uuid="f70720b4-d22f-48e5-b147-938eb1e016fc"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="160" y="0" width="79" height="20" uuid="811de0ad-3ec0-492a-ba8b-4207a4aae57f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fca069fe-0a4f-4586-a04d-0bdb1bfbae12"/>
+				</reportElement>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Fournisseur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="239" y="0" width="79" height="20" uuid="32e52979-28dc-4458-92b7-4c2a0d416937">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="767f91bf-12ea-4947-b939-e3c6cc3ef4cc"/>
+				</reportElement>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Categorie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="0" width="79" height="20" uuid="dc1e6364-ed26-49b7-9af7-10ca327d0d8c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4b95ca90-5220-485f-9ba0-77181990a9d9"/>
+				</reportElement>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Produit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="0" width="79" height="20" uuid="4fbc843c-8a0e-44e8-99bd-416f204c1a66">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bbd98825-4e51-44c4-a334-0ee26a70ddb0"/>
+				</reportElement>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Quantite]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="476" y="0" width="79" height="20" uuid="6c1d75cd-498e-4038-ab42-74a461cd6a92">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="723a15a0-8565-4bde-b0f6-53acd2366f7f"/>
+				</reportElement>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Montant]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="0" width="40" height="20" uuid="6c0ccb8c-fcee-485c-8068-774c58f7e1f6"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[N*]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="160" y="0" width="79" height="20" uuid="e18efc90-6c06-4176-a4dd-d46827cb0311">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fca069fe-0a4f-4586-a04d-0bdb1bfbae12"/>
+				</reportElement>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Fournisseur}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="239" y="0" width="79" height="20" uuid="bc1cef84-d8da-4509-95b1-8bd8aedf050c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="767f91bf-12ea-4947-b939-e3c6cc3ef4cc"/>
+				</reportElement>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Categorie}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="318" y="0" width="79" height="20" uuid="9014beb8-265f-4c47-a45f-ce9cd8aad215">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4b95ca90-5220-485f-9ba0-77181990a9d9"/>
+				</reportElement>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Produit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="397" y="0" width="79" height="20" uuid="33dae455-fb3b-4022-a18c-c56a92d17a31">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bbd98825-4e51-44c4-a334-0ee26a70ddb0"/>
+				</reportElement>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Quantite}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="0" width="79" height="20" uuid="0c55600d-8eaf-4ba7-a163-ffe772e73b65">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="723a15a0-8565-4bde-b0f6-53acd2366f7f"/>
+				</reportElement>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Montant} + " $"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="0" width="40" height="20" uuid="f50c029d-aea7-4e82-9479-0cdd66251aae"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$V{Ville_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="179">
+			<staticText>
+				<reportElement x="0" y="16" width="310" height="30" uuid="5fd4cbe5-816b-4b41-80f1-9e79fa29b4a0"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Rapport des Ventes de Northwind:1997]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="352" y="17" width="100" height="30" uuid="65c371f5-4e90-418b-b9bc-bee024ac4752"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="452" y="17" width="100" height="30" uuid="e20bfafb-1862-4b5d-be7d-72672bde2b3d"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="50">
+			<textField>
+				<reportElement x="397" y="0" width="79" height="20" uuid="adf8090e-5f2a-43d9-8e13-3ee76d8b1cea"/>
+				<box rightPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$V{Total_Quantite}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="0" width="79" height="20" uuid="45be5b6e-cfba-4dd0-a459-36de7321e282"/>
+				<box rightPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$V{Total_Montant}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="397" height="20" backcolor="#FACEBE" uuid="db70b81d-b83f-486c-adef-c8a699f9ba56"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Total quantite et montant des ventes]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="802" splitType="Stretch">
+			<lineChart>
+				<chart evaluationTime="Report">
+					<reportElement x="-11" y="30" width="291" height="170" uuid="1d79735b-a11e-47a8-a9a0-4f4e8378ed43"/>
+					<chartTitle>
+						<titleExpression><![CDATA["Evolution des ventes par mois"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="Evolution_montant_ventes_par_mois" uuid="5ff7bd2b-2087-4d10-b51b-1207f4205439"/>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Montant des ventes"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Mois}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{Montant}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</linePlot>
+			</lineChart>
+			<staticText>
+				<reportElement x="87" y="0" width="380" height="20" uuid="f237ed53-9ef3-4ee8-b63f-84d0ec93eb6b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Statistique globale de ventes realisée en 1997]]></text>
+			</staticText>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="280" y="20" width="275" height="180" uuid="effff2a3-b027-42c7-af37-906b564b457b"/>
+					<chartTitle>
+						<titleExpression><![CDATA["Repartition des ventes par categories"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="Repartition_montants_ventes_par_categories" uuid="412029b1-0ae2-4429-8049-0546e0286484"/>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Montants des ventes"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Categorie}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{Montant}]]></valueExpression>
+						<labelExpression><![CDATA["Repartition des ventes par categories"]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="-20" y="230" width="290" height="170" uuid="e51fd4d4-48c7-48b9-a778-0e1152533000"/>
+					<chartTitle>
+						<titleExpression><![CDATA["Top 10 des produits plus vendus "]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="Top_10_quantite_produits_vendus" uuid="20cba605-2fd0-417f-b27e-b2582ab4d3e5"/>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Quantite produits"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Produit}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{Quantite}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<pieChart>
+				<chart isShowLegend="false" evaluationTime="Report">
+					<reportElement x="291" y="200" width="284" height="200" uuid="ffadc4a6-0f91-44d8-8267-5196667145be"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="Top_5_fournisseur_quantite_produit" uuid="359e3664-a7c1-4e22-8e4d-1b6ba9f2934d"/>
+					</dataset>
+					<keyExpression><![CDATA[$F{Fournisseur}]]></keyExpression>
+					<valueExpression><![CDATA[$F{Quantite}]]></valueExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="-20" y="420" width="595" height="180" uuid="7556473b-b6f3-47fb-a30d-bad08a84c8a7"/>
+					<chartTitle>
+						<titleExpression><![CDATA["Repartition de ventes par pays"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="Repartition_ventes_par_pays" uuid="33e5f315-7d80-4191-9008-6f3efdbd58a2"/>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{Pays}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Pays}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{Montant}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="-20" y="610" width="595" height="192" uuid="051f8449-7463-4c35-ba6d-55c85121e5c1"/>
+					<chartTitle>
+						<titleExpression><![CDATA["Top 10 quantite par ville"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="Top_10_quantite_vendus_par_ville" uuid="95b96862-2f69-4675-a1dd-9b12c45b33e4"/>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{Ville}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Ville}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{Quantite}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>
